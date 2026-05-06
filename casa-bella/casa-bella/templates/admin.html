@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="row between">
+  <h1 class="page-title">Admin</h1>
+  <form method="post" action="{{ url_for('admin_undo') }}"><button class="btn ghost">↶ Undo (Command)</button></form>
+</header>
+<section>
+  <h2>Comenzi <small class="muted">(State + Command + Mediator + Observer)</small></h2>
+  {% if not orders %}<p class="muted">Nicio comanda inca. Plaseaza una din meniu!</p>{% endif %}
+  {% for o in orders %}
+  <div class="order">
+    <div><strong>#{{ o.id[:8] }}</strong> · {{ "%.2f"|format(o.total) }} {{ cfg.currency }} · {{ o.payment_method }} · <span class="badge status">{{ o.status }}</span></div>
+    <div class="muted small">{{ o.delivery_address }}</div>
+    <div class="actions">
+      {% set transitions = {"pending":["confirmed","cancelled"],"confirmed":["preparing","cancelled"],"preparing":["ready","cancelled"],"ready":["delivering"],"delivering":["delivered"]} %}
+      {% for n in transitions.get(o.status, []) %}
+      <form method="post" action="{{ url_for('admin_status', oid=o.id, new=n) }}" style="display:inline">
+        <button class="btn small">→ {{ n }}</button>
+      </form>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</section>
+<section class="grid2">
+  <div>
+    <h3>Observer log</h3>
+    <ul class="log">{% for n in notif_log %}<li>{{ n }}</li>{% else %}<li class="muted">-</li>{% endfor %}</ul>
+  </div>
+  <div>
+    <h3>Mediator log</h3>
+    <ul class="log">{% for m in mediator_log %}<li>{{ m }}</li>{% else %}<li class="muted">-</li>{% endfor %}</ul>
+  </div>
+</section>
+<section>
+  <h3>Export (Visitor)</h3>
+  <a class="btn ghost" href="{{ url_for('admin_export', fmt='json') }}">JSON</a>
+  <a class="btn ghost" href="{{ url_for('admin_export', fmt='csv') }}">CSV</a>
+  <a class="btn ghost" href="{{ url_for('admin_export', fmt='xml') }}">XML</a>
+</section>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block body %}
+<div class="container section">
+  <div class="form">
+    <h2>Finalizare comandă</h2>
+    <form method="post">
+      <div class="field">
+        <label>Metodă de plată</label>
+        <select name="payment">
+          <option value="cash">Cash la livrare</option>
+          <option value="card">Card (Stripe)</option>
+          <option value="online">Online (PayPal)</option>
+        </select>
+      </div>
+      <div class="field"><label>Adresă de livrare</label><input name="address" required placeholder="Str. Ștefan cel Mare 100, Chișinău"></div>
+      <div class="field"><label>Note (opțional)</label><textarea name="notes" rows="3" placeholder="Fără ceapă, vă rog…"></textarea></div>
+      <button class="btn btn-primary" style="width:100%">Plasează comanda</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

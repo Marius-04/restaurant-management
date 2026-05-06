@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Casa Bella{% endblock %} — Restaurant Italian</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="{{ url_for('index') }}">Casa <span>Bella</span></a>
+    <div class="nav-links">
+      <a href="{{ url_for('index') }}">Acasă</a>
+      <a href="{{ url_for('menu') }}">Meniu</a>
+      <a href="{{ url_for('patterns_page') }}">Patterns</a>
+      <a href="{{ url_for('cart') }}">Coș
+        {% if cart_count %}<span class="cart-badge">{{ cart_count }}</span>{% endif %}
+      </a>
+      {% if user %}
+        <a href="{{ url_for('my_orders') }}">Comenzile mele</a>
+        {% if user.is_admin %}<a href="{{ url_for('admin') }}">Admin</a>{% endif %}
+        <a href="{{ url_for('logout') }}" class="btn btn-ghost btn-sm">Logout ({{ user.full_name or user.email }})</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-primary btn-sm">Login / Cont</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+    {% with msgs = get_flashed_messages(with_categories=true) %}
+      {% for cat, m in msgs %}<div class="flash {{ cat }}">{{ m }}</div>{% endfor %}
+    {% endwith %}
+  </div>
+  {% block body %}{% endblock %}
+</main>
+
+<footer>
+  <div class="container">
+    <div class="brand" style="color:#fff">Casa <span>Bella</span></div>
+    <p>Restaurant italian autentic · {{ cfg.support_email }}</p>
+    <p class="small">© 2025 Casa Bella · Built with Flask + 13 Design Patterns</p>
+  </div>
+</footer>
+
+</body>
+</html>

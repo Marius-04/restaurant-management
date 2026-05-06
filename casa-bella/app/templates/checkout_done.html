@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Comandă plasată{% endblock %}
+{% block body %}
+<div class="container section">
+  <div class="form" style="max-width:640px">
+    <h2>✓ Comanda #{{ r.order_id }} a fost plasată!</h2>
+    <p>Total: <strong>{{ "%.2f"|format(r.total) }} {{ cfg.currency }}</strong></p>
+    <p>Plată: {{ r.payment.provider }} → <code>{{ r.payment.transaction_id }}</code></p>
+
+    <h3 style="margin-top:1.5rem">Fluxul intern (Facade + Decorator + AbstractFactory + Observer)</h3>
+    <pre class="tree">{% for l in r.facade_log %}{{ l }}
+{% endfor %}
+--- Notificări (Decorator chain + AbstractFactory) ---
+{% for n in r.notifications %}{{ n }}
+{% endfor %}</pre>
+
+    <a href="{{ url_for('my_orders') }}" class="btn btn-primary">Vezi comenzile mele</a>
+    <a href="{{ url_for('menu') }}" class="btn btn-ghost">Înapoi la meniu</a>
+  </div>
+</div>
+{% endblock %}

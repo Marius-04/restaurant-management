@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Acasă{% endblock %}
+{% block body %}
+
+<section class="hero">
+  <div class="container">
+    <p class="eyebrow">Restaurant italian autentic</p>
+    <h1>Bun venit la Casa Bella</h1>
+    <p class="lead">Bucătăria Italiei aduce la masa ta — paste proaspete, pizza coaptă în cuptor cu lemne și deserturi tradiționale.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="{{ url_for('menu') }}">Vezi meniul</a>
+      <a class="btn btn-outline" href="{{ url_for('patterns_page') }}">Despre arhitectură</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 style="text-align:center; margin-bottom:.5rem">Recomandările casei</h2>
+    <p style="text-align:center; color:var(--muted); margin-bottom:3rem">O selecție din cele mai îndrăgite preparate</p>
+    <div class="grid grid-3">
+      {% for p in featured %}
+      <article class="card">
+        <div class="card-img"><img src="{{ url_for('static', filename='img/' ~ p.image) }}" alt="{{ p.name }}"></div>
+        <div class="card-body">
+          <span class="tag">{{ p.type }}</span>
+          <h3 class="card-title">{{ p.name }}</h3>
+          <p class="card-desc">{{ p.description }}</p>
+          <div class="card-footer">
+            <span class="price">{{ "%.2f"|format(p.price) }} {{ cfg.currency }}</span>
+            <form method="post" action="{{ url_for('add_to_cart', pid=p.id) }}">
+              <button class="btn btn-primary btn-sm">+ Coș</button>
+            </form>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

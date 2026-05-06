@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Admin{% endblock %}
+{% block body %}
+<div class="container section">
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem">
+    <h1>Panou administrare</h1>
+    <form method="post" action="{{ url_for('admin_undo_route') }}">
+      <button class="btn btn-outline">↶ Undo ultima acțiune (Command)</button>
+    </form>
+  </div>
+  <p style="color:var(--muted)">Tranzițiile sunt restricționate de State Machine, fiecare schimbare e încapsulată într-un Command (cu Undo).</p>
+
+  <table class="table">
+    <thead><tr><th>#</th><th>Total</th><th>Plată</th><th>Status</th><th>Adresă</th><th>Acțiuni</th></tr></thead>
+    <tbody>
+    {% for o in orders %}
+      <tr>
+        <td>#{{ o.id }}</td>
+        <td>{{ "%.2f"|format(o.total) }} {{ cfg.currency }}</td>
+        <td>{{ o.payment_method }}</td>
+        <td><span class="status-pill status-{{ o.status }}">{{ o.status }}</span></td>
+        <td style="font-size:.85rem; color:var(--muted)">{{ o.delivery_address or '—' }}</td>
+        <td>
+          {% set nexts = transitions.get(o.status, []) %}
+          {% if nexts %}
+            <form method="post" action="{{ url_for('admin_status', oid=o.id) }}" style="display:inline-flex; gap:.3rem">
+              <select name="status" class="btn-ghost" style="padding:.4rem">
+                {% for n in nexts %}<option value="{{ n }}">→ {{ n }}</option>{% endfor %}
+              </select>
+              <button class="btn btn-primary btn-sm">Aplică</button>
+            </form>
+          {% else %}
+            <span style="color:var(--muted); font-size:.85rem">stare finală</span>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

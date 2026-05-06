@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Cosul tau</h1>
+{% if not lines %}
+  <p class="muted">Cosul e gol. <a href="{{ url_for('menu') }}">Vezi meniul</a>.</p>
+{% else %}
+<table class="tbl">
+  <tr><th>Produs</th><th>Cant.</th><th>Pret</th><th>Subtotal</th><th></th></tr>
+  {% for l in lines %}
+  <tr>
+    <td>{{ l.product.image }} {{ l.product.name }}</td>
+    <td>{{ l.qty }}</td>
+    <td>{{ "%.2f"|format(l.product.price) }} {{ cfg.currency }}</td>
+    <td>{{ "%.2f"|format(l.subtotal) }} {{ cfg.currency }}</td>
+    <td><form method="post" action="{{ url_for('cart_remove', pid=l.product.id) }}"><button class="btn small ghost">✕</button></form></td>
+  </tr>
+  {% endfor %}
+  <tr class="total"><td colspan="3"></td><td><strong>{{ "%.2f"|format(total) }} {{ cfg.currency }}</strong></td><td></td></tr>
+</table>
+<div class="actions">
+  {% if can_undo %}
+  <form method="post" action="{{ url_for('cart_undo') }}"><button class="btn ghost">↶ Undo (Memento)</button></form>
+  {% endif %}
+  <a class="btn primary" href="{{ url_for('checkout') }}">Comanda →</a>
+</div>
+{% endif %}
+{% endblock %}

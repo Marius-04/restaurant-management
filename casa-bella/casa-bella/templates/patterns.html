@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">13 Design Patterns</h1>
+<p class="muted">Fiecare pattern este folosit efectiv in aplicatie. Sursa: <code>patterns/p01..p13_*.py</code></p>
+
+<table class="tbl">
+<tr><th>#</th><th>Pattern</th><th>Categorie</th><th>Unde</th></tr>
+<tr><td>1</td><td>Factory Method</td><td>Creational</td><td>app/data.py - creaza FoodProduct/DrinkProduct</td></tr>
+<tr><td>2</td><td>Builder</td><td>Creational</td><td>services.checkout - construieste comanda</td></tr>
+<tr><td>3</td><td>Singleton</td><td>Creational</td><td>AppConfig - o singura configurare globala</td></tr>
+<tr><td>4</td><td>Adapter</td><td>Structural</td><td>Stripe/PayPal/Cash adaptate la PaymentGateway</td></tr>
+<tr><td>5</td><td>Composite</td><td>Structural</td><td>Meniu = arbore Categorii + Produse (vezi mai jos)</td></tr>
+<tr><td>6</td><td>Decorator</td><td>Structural</td><td>Notificari: UI + Email + SMS in lant</td></tr>
+<tr><td>7</td><td>Strategy</td><td>Behavioral</td><td>strategy_for(method) alege gateway-ul</td></tr>
+<tr><td>8</td><td>Observer</td><td>Behavioral</td><td>order_bus - subscriberi pentru evenimente</td></tr>
+<tr><td>9</td><td>Command</td><td>Behavioral</td><td>Undo schimbari status in admin</td></tr>
+<tr><td>10</td><td>State</td><td>Behavioral</td><td>OrderStateMachine - tranzitii valide</td></tr>
+<tr><td>11</td><td>Mediator</td><td>Behavioral</td><td>Bucataria + Livrarea comunica prin mediator</td></tr>
+<tr><td>12</td><td>Visitor</td><td>Behavioral</td><td>Export comenzi in JSON/CSV/XML</td></tr>
+<tr><td>13</td><td>Memento</td><td>Behavioral</td><td>Undo modificari cos</td></tr>
+</table>
+
+<h2>Composite live: arborele meniului ({{ total_products }} produse)</h2>
+<pre class="tree">{{ composite_tree }}</pre>
+{% endblock %}

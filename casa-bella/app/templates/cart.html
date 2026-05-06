@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Coș{% endblock %}
+{% block body %}
+<div class="container section">
+  <h1>Coșul tău</h1>
+  {% if not items %}
+    <p style="color:var(--muted)">Coșul este gol. <a href="{{ url_for('menu') }}">Vezi meniul →</a></p>
+  {% else %}
+    <div class="with-sidebar">
+      <div>
+        {% for it in items %}
+        <div class="cart-row">
+          <img src="{{ url_for('static', filename='img/' ~ it.p.image) }}" alt="">
+          <div>
+            <strong>{{ it.p.name }}</strong>
+            <div style="color:var(--muted); font-size:.85rem">{{ "%.2f"|format(it.p.price) }} × {{ it.qty }}</div>
+          </div>
+          <div class="price">{{ "%.2f"|format(it.line) }} {{ cfg.currency }}</div>
+          <form method="post" action="{{ url_for('cart_remove', pid=it.p.id) }}">
+            <button class="btn btn-ghost btn-sm">✕</button>
+          </form>
+        </div>
+        {% endfor %}
+        <form method="post" action="{{ url_for('cart_clear') }}" style="margin-top:1rem">
+          <button class="btn btn-ghost btn-sm">Golește coșul</button>
+        </form>
+      </div>
+      <aside class="summary">
+        <h3>Sumar</h3>
+        <div class="summary-row"><span>Subtotal</span><span>{{ "%.2f"|format(subtotal) }} {{ cfg.currency }}</span></div>
+        <div class="summary-row"><span>TVA ({{ (cfg.tax_rate*100)|int }}%)</span><span>{{ "%.2f"|format(tax) }} {{ cfg.currency }}</span></div>
+        <div class="summary-row"><span>Livrare</span><span>{{ "%.2f"|format(delivery) }} {{ cfg.currency }}</span></div>
+        <div class="summary-row total"><span>Total</span><span>{{ "%.2f"|format(total) }} {{ cfg.currency }}</span></div>
+        <a href="{{ url_for('checkout_view') }}" class="btn btn-primary" style="width:100%; text-align:center; margin-top:1rem">Finalizează comanda</a>
+      </aside>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

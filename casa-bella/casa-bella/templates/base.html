@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ cfg.restaurant_name }}{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="{{ url_for('index') }}">🍝 {{ cfg.restaurant_name }}</a>
+  <nav>
+    <a href="{{ url_for('index') }}">Acasa</a>
+    <a href="{{ url_for('menu') }}">Meniu</a>
+    <a href="{{ url_for('patterns_page') }}">Patterns</a>
+    <a href="{{ url_for('admin') }}">Admin</a>
+    <a class="cart-link" href="{{ url_for('cart_view') }}">🛒 Cos <span class="badge">{{ cart_count }}</span></a>
+  </nav>
+</header>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}<div class="flashes">
+    {% for cat, m in messages %}<div class="flash {{ cat }}">{{ m }}</div>{% endfor %}
+  </div>{% endif %}
+{% endwith %}
+<main>{% block content %}{% endblock %}</main>
+<footer><p>&copy; Casa Bella - Proiect Design Patterns (Python + Flask)</p></footer>
+</body>
+</html>

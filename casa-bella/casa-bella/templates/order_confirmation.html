@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">✓ Comanda confirmata</h1>
+<div class="confirm">
+  <p>ID comanda: <code>{{ order.id[:12] }}</code></p>
+  <p>Total: <strong>{{ "%.2f"|format(order.total) }} {{ cfg.currency }}</strong></p>
+  <p>Plata: {{ order.payment.provider }} (id: {{ order.payment.id }})</p>
+  <h3>Notificari trimise (Decorator)</h3>
+  <ul>{% for c in order.channels %}<li>{{ c }}</li>{% endfor %}</ul>
+  <a class="btn ghost" href="{{ url_for('menu') }}">Inapoi la meniu</a>
+  <a class="btn primary" href="{{ url_for('admin') }}">Vezi in Admin</a>
+</div>
+{% endblock %}

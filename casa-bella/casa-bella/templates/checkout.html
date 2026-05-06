@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Finalizare comanda</h1>
+<div class="checkout">
+  <form method="post" class="form">
+    <label>Adresa livrare<input name="address" required></label>
+    <label>Note<textarea name="notes" rows="2"></textarea></label>
+    <fieldset>
+      <legend>Metoda plata <small>(Strategy + Adapter)</small></legend>
+      <label><input type="radio" name="payment_method" value="cash" checked> Cash la livrare</label>
+      <label><input type="radio" name="payment_method" value="card"> Card (Stripe)</label>
+      <label><input type="radio" name="payment_method" value="online"> Online (PayPal)</label>
+    </fieldset>
+    <button class="btn primary">Plaseaza comanda</button>
+  </form>
+  <aside class="summary">
+    <h3>Sumar</h3>
+    <ul>{% for l in lines %}<li>{{ l.product.name }} × {{ l.qty }}</li>{% endfor %}</ul>
+    <p class="total">Total: <strong>{{ "%.2f"|format(total) }} {{ cfg.currency }}</strong></p>
+  </aside>
+</div>
+{% endblock %}

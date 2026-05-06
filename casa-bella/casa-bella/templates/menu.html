@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Meniul nostru</h1>
+<p class="muted">Cream produsele cu <strong>Factory Method</strong>, organizam meniul cu <strong>Composite</strong>.</p>
+{% for cname, items in categories %}
+<section class="cat">
+  <h2>{{ cname }}</h2>
+  <div class="grid">
+    {% for p in items %}
+    <article class="card">
+      <div class="emoji">{{ p.image }}</div>
+      <h3>{{ p.name }}</h3>
+      <p>{{ p.description }}</p>
+      <div class="row">
+        <span class="price">{{ "%.2f"|format(p.price) }} {{ cfg.currency }}</span>
+        <form action="{{ url_for('cart_add', pid=p.id) }}" method="post">
+          <button class="btn small">+ Cos</button>
+        </form>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}13 Design Patterns{% endblock %}
+{% block body %}
+<div class="container section">
+  <p style="color:var(--primary); text-transform:uppercase; letter-spacing:.2em; font-size:.85rem">Arhitectură</p>
+  <h1>13 Design Patterns</h1>
+  <p style="color:var(--muted); max-width:720px">
+    Distribuție: <strong>4 Creational + 4 Structural + 4 Behavioral + Singleton (obligatoriu)</strong>.
+    Fiecare pattern este implementat în <code>patterns/</code> și folosit într-o funcționalitate reală.
+  </p>
+
+  <h2 class="cat-title" style="color:#b8763a">Creational (4)</h2>
+  <div class="grid grid-2">
+    <div class="pattern-card creational"><h3><span class="pattern-num">01</span>Factory Method</h3>
+      <p>Creează produse de meniu (food/drink) fără ca apelantul să cunoască clasele concrete.</p>
+      <p><code>patterns/p01_factory_method.py</code> · folosit în <code>app/data.py</code></p></div>
+    <div class="pattern-card creational"><h3><span class="pattern-num">02</span>Abstract Factory</h3>
+      <p>Familii de obiecte înrudite: Sender + Template pentru Email și SMS.</p>
+      <p><code>patterns/p02_abstract_factory.py</code> · folosit la confirmarea comenzii</p></div>
+    <div class="pattern-card creational"><h3><span class="pattern-num">03</span>Builder</h3>
+      <p>Construiește comanda pas cu pas (items, plată, adresă, note) cu API fluent.</p>
+      <p><code>patterns/p03_builder.py</code> · folosit în checkout</p></div>
+    <div class="pattern-card creational"><h3><span class="pattern-num">04</span>Prototype</h3>
+      <p>Clonăm produse existente cu mici modificări fără reconstruirea de la zero.</p>
+      <p><code>patterns/p04_prototype.py</code></p></div>
+  </div>
+
+  <h2 class="cat-title" style="color:#2c4a3a">Structural (4)</h2>
+  <div class="grid grid-2">
+    <div class="pattern-card structural"><h3><span class="pattern-num">05</span>Adapter</h3>
+      <p>Uniformizează SDK-uri de plată (Stripe-like, PayPal-like, Cash) sub o interfață comună.</p>
+      <p><code>patterns/p05_adapter.py</code> · folosit prin Strategy</p></div>
+    <div class="pattern-card structural"><h3><span class="pattern-num">06</span>Decorator</h3>
+      <p>Adăugăm dinamic canale de notificare (Console → +UI → +Email → +SMS).</p>
+      <p><code>patterns/p06_decorator.py</code> · după plasarea comenzii</p></div>
+    <div class="pattern-card structural"><h3><span class="pattern-num">07</span>Composite</h3>
+      <p>Tratăm uniform categorii și produse într-un meniu ierarhic — vezi arborele de mai jos.</p>
+      <p><code>patterns/p07_composite.py</code></p></div>
+    <div class="pattern-card structural"><h3><span class="pattern-num">08</span>Facade</h3>
+      <p>O față simplă peste subsistemele complexe (stoc, bucătărie, livrare).</p>
+      <p><code>patterns/p08_facade.py</code> · folosit în checkout</p></div>
+  </div>
+
+  <h2 class="cat-title" style="color:#5b3a8a">Behavioral (4)</h2>
+  <div class="grid grid-2">
+    <div class="pattern-card behavioral"><h3><span class="pattern-num">09</span>Strategy</h3>
+      <p>Selectează la runtime algoritmul de plată în funcție de alegerea utilizatorului.</p>
+      <p><code>patterns/p09_strategy.py</code> · cash/card/online</p></div>
+    <div class="pattern-card behavioral"><h3><span class="pattern-num">10</span>Observer</h3>
+      <p><code>order_bus</code> notifică toți subscriberii la evenimente de comandă.</p>
+      <p><code>patterns/p10_observer.py</code></p></div>
+    <div class="pattern-card behavioral"><h3><span class="pattern-num">11</span>Command</h3>
+      <p>Acțiunile (schimbare status) sunt obiecte cu execute/undo. Vezi butonul Undo în Admin.</p>
+      <p><code>patterns/p11_command.py</code></p></div>
+    <div class="pattern-card behavioral"><h3><span class="pattern-num">12</span>State</h3>
+      <p>Tranzițiile de status sunt restricționate de starea curentă (FSM).</p>
+      <p><code>patterns/p12_state.py</code></p></div>
+  </div>
+
+  <h2 class="cat-title" style="color:#c43d3d">Obligatoriu</h2>
+  <div class="grid grid-2">
+    <div class="pattern-card singleton"><h3><span class="pattern-num">13</span>Singleton ★</h3>
+      <p>O singură instanță globală pentru configurația aplicației (nume, taxă, livrare). Implementat cu metaclass thread-safe.</p>
+      <p><code>patterns/p13_singleton.py</code> · folosit peste tot ca <code>app_config</code></p>
+      <p style="margin-top:.6rem">Curent: <strong>{{ cfg.restaurant_name }}</strong>, livrare {{ cfg.delivery_fee }} {{ cfg.currency }}, taxă {{ (cfg.tax_rate*100)|int }}%.</p></div>
+  </div>
+
+  <h2 class="cat-title">Demo Composite — arborele meniului</h2>
+  <pre class="tree">{{ tree }}</pre>
+
+  {% if events %}
+  <h2 class="cat-title">Demo Observer — ultimele evenimente</h2>
+  <pre class="tree">{% for e in events %}{{ e.type }} · order #{{ e.order_id }} · {{ e.payload }}
+{% endfor %}</pre>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="kicker">Bucatarie italiana autentica</p>
+    <h1>Bun venit la <span>Casa Bella</span></h1>
+    <p class="lead">35+ preparate inspirate din traditiile Italiei. Comanda online cu livrare la usa.</p>
+    <a class="btn primary" href="{{ url_for('menu') }}">Vezi meniul</a>
+    <a class="btn ghost" href="{{ url_for('patterns_page') }}">13 Design Patterns</a>
+  </div>
+</section>
+<section class="featured">
+  <h2>Recomandarile chef-ului</h2>
+  <div class="grid">
+    {% for p in featured %}
+    <article class="card">
+      <div class="emoji">{{ p.image }}</div>
+      <h3>{{ p.name }}</h3>
+      <p>{{ p.description }}</p>
+      <div class="row"><span class="price">{{ "%.2f"|format(p.price) }} {{ cfg.currency }}</span>
+        <form action="{{ url_for('cart_add', pid=p.id) }}" method="post">
+          <button class="btn small">+ Cos</button>
+        </form>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

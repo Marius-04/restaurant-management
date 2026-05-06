@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Comenzile mele{% endblock %}
+{% block body %}
+<div class="container section">
+  <h1>Comenzile mele</h1>
+  {% if not orders %}
+    <p style="color:var(--muted)">Nu ai nicio comandă încă.</p>
+  {% else %}
+    {% for entry in orders %}
+    {% set o = entry.o %}
+    <div class="card" style="margin-bottom:1rem; padding:1.5rem">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:.8rem">
+        <strong>Comandă #{{ o.id }}</strong>
+        <span class="status-pill status-{{ o.status }}">{{ o.status }}</span>
+      </div>
+      <div style="color:var(--muted); font-size:.88rem; margin-bottom:.5rem">{{ o.created_at }} · {{ o.payment_method }} · {{ o.delivery_address or '—' }}</div>
+      <ul style="margin:.5rem 0; padding-left:1.2rem">
+        {% for it in entry['items'] %}<li>{{ it.name }} × {{ it.quantity }} — {{ "%.2f"|format(it.unit_price * it.quantity) }} {{ cfg.currency }}</li>{% endfor %}
+      </ul>
+      <div class="price" style="text-align:right">Total: {{ "%.2f"|format(o.total) }} {{ cfg.currency }}</div>
+    </div>
+    {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

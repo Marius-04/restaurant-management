@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Meniu{% endblock %}
+{% block body %}
+<div class="container section">
+  <p class="eyebrow" style="color:var(--primary); text-transform:uppercase; letter-spacing:.2em; font-size:.85rem">Selecția noastră</p>
+  <h1>Meniu complet</h1>
+  <p style="color:var(--muted); max-width:640px">Peste 35 de preparate italiene autentice, organizate pe categorii.</p>
+
+  {% for cat in categories %}
+    {% if grouped[cat] %}
+    <h2 class="cat-title">{{ cat }}</h2>
+    <div class="grid grid-3">
+      {% for p in grouped[cat] %}
+      <article class="card">
+        <div class="card-img"><img src="{{ url_for('static', filename='img/' ~ p.image) }}" alt="{{ p.name }}"></div>
+        <div class="card-body">
+          <span class="tag">{{ p.type }}</span>
+          <h3 class="card-title">{{ p.name }}</h3>
+          <p class="card-desc">{{ p.description }}</p>
+          <div class="card-footer">
+            <span class="price">{{ "%.2f"|format(p.price) }} {{ cfg.currency }}</span>
+            <form method="post" action="{{ url_for('add_to_cart', pid=p.id) }}">
+              <button class="btn btn-primary btn-sm">+ Coș</button>
+            </form>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endblock %}
